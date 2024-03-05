@@ -36,7 +36,7 @@
             <div class="menu">
                 <a href="dashboard2.html">Dashboard</a>
                 <a href="EstimarVendas.html">Estimar Vendas</a>
-                <a href="#">Investimentos</a>
+                <a href="investimentos.html">Investimentos</a>
                 <a href="#">Custos Fixos</a>
                 <a href="#">Custos Variados</a>
                 <a href="MaoDeObra.html" class="pagAtual">Mão de Obra</a>
@@ -45,14 +45,14 @@
             </div>
 
             <div class="main">
-                <h2 class="titulo">Estimativa de Sazonalidade</h2>
+                <h2 class="titulo">Mão de Obra</h2>
                 <div class="row">
                     <div class="col-5 pt-4">
                         <label for="cargo">Cargo</label>
                         <input type="text" name="cargo" id="txtcargo" class="form-control">
                     </div>
                     <div class="col-5 pt-4">
-                        <label for="provisao">Provisao</label>
+                        <label for="provisao">Provisão</label>
                         <input type="number" placeholder="Aviso previo (Salário mensal/ 12)" name="provisao" id="numberprovisao" class="form-control">
                     </div>
                     <div class="col-2 pt-4">
@@ -86,13 +86,11 @@
                 <div class="row">
                     <div class="col-5 pt-4">
                         <label for="beneficio">Benefício</label>
-                        <input type="number" placeholder="Alimentação(Valor unitário * Quantidade de dias )" name="ferias" id="numberferias" class="form-control">
+                        <input type="number" placeholder="Alimentação (Valor unitário * Quantidade de dias)" name="alimentacao" id="txtAlimentacao" class="form-control">
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="col-5 pt-4">
-                        <input type="number" placeholder="Transporte(Valor unitário * Quantidade de dias )" name="ferias" id="numberferias" class="form-control">
+                        <label for="transporte">Transporte</label>
+                        <input type="number" placeholder="Transporte (Valor unitário * Quantidade de dias)" name="transporte" id="txtTransporte" class="form-control">
                     </div>
                 </div>
 
@@ -142,6 +140,7 @@
                 </table>
                 <button type="button" class="btn btn-secondary btn-lg btn-block">Próximo</button>
             </div>
+            <script src="mainMO.js"></script>
 </body>
 
 </html>

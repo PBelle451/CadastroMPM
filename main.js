@@ -8,6 +8,12 @@ function adicionarLinha() {
     var precoVenda = document.getElementById('numberprecoVenda').value;
     var estimativaMax = document.getElementById('numberestimativaMax').value;
 
+    // Verifica se os campos obrigatórios estão preenchidos
+    if (!descricao || !qtdVendasPeriodo || !periodo || !precoVenda) {
+        alert('Preencha todos os campos obrigatórios.');
+        return;
+    }
+
     // Referência à tabela
     var tabela = document.getElementById('minhaTabela');
 
@@ -31,35 +37,73 @@ function adicionarLinha() {
     celulaAcoes.innerHTML = '<img src="asserts/img/Caneta.svg" alt="editar"> <img src="asserts/img/Lixeira.svg" alt="Lixeira" style="cursor:pointer;" onclick="excluirLinha(this)">';
     novaLinha.classList.add('linhaTabela');
 
-    
+    // Cria um objeto com os dados da nova linha
+    var novaLinhaData = {
+        descricao: descricao,
+        periodo: periodo,
+        qtdVendasPeriodo: qtdVendasPeriodo,
+        precoVenda: precoVenda,
+        estimativaMax: estimativaMax
+    };
+
+    // Adiciona o objeto à array de dados da tabela no localStorage
+    var dadosTabela = JSON.parse(localStorage.getItem('dadosTabela')) || [];
+    dadosTabela.push(novaLinhaData);
+    localStorage.setItem('dadosTabela', JSON.stringify(dadosTabela));
 }
 
-function excluirLinha(botaoLixeira) {
-    // Obtém a referência à linha que contém o botão de lixeira clicado
-    var linha = botaoLixeira.closest('tr');
+// Função para carregar os dados da tabela do localStorage
+function carregarDadosTabela() {
+    var dadosTabela = JSON.parse(localStorage.getItem('dadosTabela')) || [];
 
-    // Remove a linha da tabela
-    linha.remove();
+    // Referência à tabela
+    var tabela = document.getElementById('minhaTabela');
+
+    // Itera sobre os dados e adiciona as linhas na tabela visualmente
+    for (var i = 0; i < dadosTabela.length; i++) {
+        var linhaData = dadosTabela[i];
+
+        // Cria uma nova linha na tabela
+        var novaLinha = tabela.insertRow(-1);
+
+        // Insere células na nova linha
+        var celulaDescricao = novaLinha.insertCell(0);
+        var celulaPeriodo = novaLinha.insertCell(1);
+        var celulaQtd = novaLinha.insertCell(2);
+        var celulaPreco = novaLinha.insertCell(3);
+        var celulaProjecao = novaLinha.insertCell(4);
+        var celulaAcoes = novaLinha.insertCell(5);
+
+        // Preenche as células com os valores dos dados
+        celulaDescricao.innerHTML = '<span style="color: #663398;">' + linhaData.descricao + '</span>';
+        celulaPeriodo.innerHTML = '<span style="color: #663398;">' + linhaData.periodo + '</span>';
+        celulaQtd.innerHTML = '<span style="color: #663398;">' + linhaData.qtdVendasPeriodo + '</span>';
+        celulaPreco.innerHTML = '<span style="color: #663398;">R$ ' + linhaData.precoVenda + '</span>';
+        celulaProjecao.innerHTML = '';  // Adicione a lógica para calcular a projeção aqui, se necessário
+        celulaAcoes.innerHTML = '<img src="asserts/img/Caneta.svg" alt="editar"> <img src="asserts/img/Lixeira.svg" alt="Lixeira" style="cursor:pointer;" onclick="excluirLinha(this)">';
+        novaLinha.classList.add('linhaTabela');
+    }
 }
 
-//Script para o icone exibir uma tabela
+// Chama a função para carregar os dados da tabela ao carregar a página
 document.addEventListener('DOMContentLoaded', function () {
-    var detalheIcon = document.querySelector('.detalhe');
-    var explicacaoBox = document.getElementById('explicacaoBox');
-
-    detalheIcon.addEventListener('click', function () {
-        // Alternar a visibilidade da caixa de explicação
-        if (explicacaoBox.style.display === 'none' || explicacaoBox.style.display === '') {
-            explicacaoBox.style.display = 'block';
-        } else {
-            explicacaoBox.style.display = 'none';
-        }
-    });
-
-    // Fechar a caixa de explicação se clicar fora dela
-    document.addEventListener('click', function (event) {
-        if (!explicacaoBox.contains(event.target) && event.target !== detalheIcon) {
-            explicacaoBox.style.display = 'none';
-        }
-    });
+    carregarDadosTabela();
 });
+
+// Função para excluir uma linha da tabela
+function excluirLinha(botaoLixeira) {
+    // Obtém o índice da linha no DOM
+    var indiceLinha = botaoLixeira.closest('tr').rowIndex;
+
+    // Obtém os dados da tabela do localStorage
+    var dadosTabela = JSON.parse(localStorage.getItem('dadosTabela')) || [];
+
+    // Remove o objeto correspondente ao índice da linha
+    dadosTabela.splice(indiceLinha - 1, 1);
+
+    // Atualiza os dados no localStorage
+    localStorage.setItem('dadosTabela', JSON.stringify(dadosTabela));
+
+    // Remove a linha visualmente
+    botaoLixeira.closest('tr').remove();
+}
